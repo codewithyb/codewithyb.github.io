@@ -1,11 +1,213 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Campus Canteen Website</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Canteen</title>
+  <style>
+    /* Reset & Basics */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f4f4f4; color: #333; }
+    header { background: #333; color: white; padding: 1rem; text-align: center; }
+    nav ul { list-style: none; display: flex; justify-content: center; gap: 2rem; margin-top: 1rem; }
+    nav a { color: white; text-decoration: none; }
+    .hero { background: url('https://source.unsplash.com/random/1600x900/?canteen') no-repeat center/cover; height: 60vh; display: flex; align-items: center; justify-content: center; color: white; text-align: center; }
+    .hero h1 { font-size: 3rem; }
+    .container { max-width: 1200px; margin: 2rem auto; padding: 0 1rem; }
+    .search-bar { margin-bottom: 2rem; text-align: center; }
+    .search-bar input { padding: 0.5rem; width: 300px; }
+    .categories { display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .categories button { padding: 0.5rem 1rem; background: #333; color: white; border: none; cursor: pointer; }
+    .categories button.active { background: #ff6347; }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+    .menu-card { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 4px 8px rgba(0,0,0,0.1); text-align: center; padding: 1rem; }
+    .menu-card img { width: 100%; height: 200px; object-fit: cover; }
+    .menu-card h3 { margin: 1rem 0; }
+    .price { font-size: 1.5rem; color: #ff6347; margin: 0.5rem 0; }
+    .veg { color: green; font-weight: bold; }
+    button.add-to-cart { background: #ff6347; color: white; border: none; padding: 0.5rem 1rem; cursor: pointer; }
+    #cart-count { background: red; color: white; border-radius: 50%; padding: 0.2rem 0.5rem; font-size: 0.8rem; }
+    .cart-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center; }
+    .cart-content { background: white; padding: 2rem; border-radius: 10px; width: 400px; max-height: 80vh; overflow-y: auto; }
+    @media (max-width: 768px) { .menu-grid { grid-template-columns: 1fr; } }
+  </style>
 </head>
 <body>
-  <h1>Campus Canteen Website</h1>
-  <p>A responsive site with food menu and shopping cart UI.</p>
-  <a href="index.html">← Back to Portfolio</a>
+  <header>
+    <h1>Campus Canteen</h1>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#" id="cart-btn">Cart <span id="cart-count">0</span></a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Welcome to Our Canteen</h1>
+      <p>Open: 8AM - 8PM | Delicious & Affordable Meals</p>
+    </div>
+  </section>
+
+  <div class="container" id="menu">
+    <div class="search-bar">
+      <input type="text" id="search" placeholder="Search menu...">
+    </div>
+    <div class="categories">
+      <button class="active" data-category="all">All</button>
+      <button data-category="breakfast">Breakfast</button>
+      <button data-category="lunch">Lunch</button>
+      <button data-category="snacks">Snacks</button>
+      <button data-category="beverages">Beverages</button>
+    </div>
+
+    <div class="menu-grid" id="menu-grid">
+      <!-- Menu items will be added by JS -->
+    </div>
+  </div>
+
+  <!-- Cart Modal -->
+  <div class="cart-modal" id="cart-modal">
+    <div class="cart-content">
+      <h2>Your Cart</h2>
+      <div id="cart-items"></div>
+      <p>Total: <strong id="cart-total">$0</strong></p>
+      <button id="place-order">Place Order</button>
+      <button id="close-cart">Close</button>
+    </div>
+  </div>
+
+  <script>
+   const menuItems = [
+  { id: 1, name: "Veg Sandwich", category: "breakfast", price: 5,  img: "https://assets.bonappetit.com/photos/57aca69153e63daf11a4d915/4:3/w_3752,h_2814,c_limit/california-veggie-sandwich.jpg" },
+   { id: 2, name: "Idli Sambar", category: "breakfast", price: 4, img: "https://media.istockphoto.com/id/1024549286/photo/idly-sambar-or-idli-with-sambhar-and-green-red-chutney-popular-south-indian-breakfast.jpg?s=612x612&w=0&k=20&c=pLE9fkx7E502vOhRZ0bwc6R9z2QgJzhRwd0F-6-nGT0=" },
+  { id: 3, name: "Chicken Biryani", category: "lunch", price: 12,  img: "https://www.thespruceeats.com/thmb/XDBL9gA6A6nYWUdsRZ3QwH084rk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/SES-chicken-biryani-recipe-7367850-hero-A-ed211926bb0e4ca1be510695c15ce111.jpg" },
+  { id: 4, name: "Paneer Butter Masala", category: "lunch", price: 10,  img: "https://www.indianhealthyrecipes.com/wp-content/uploads/2014/11/paneer-butter-masala-recipe-2.jpg" },
+  { id: 5, name: "Samosa", category: "snacks", price: 2,  img: "https://www.thespruceeats.com/thmb/-O6uu2nR3pFAXg0M4Fx2S0tVuCs=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/GettyImages-1127143255-5c5f7e3546e0fb0001442255.jpg" },
+  { id: 6, name: "Tea", category: "beverages", price: 1.5,  img: "https://media.istockphoto.com/id/540860774/photo/samosa-snack-with-tomato-ketchup-and-hot-tea.jpg?s=612x612&w=0&k=20&c=lpWKRJidN7j6IkR6KGQ0u8KkET1bmr8oR_HlkDh3uA8=" },
+  { id: 7, name: "Pasta Alfredo", category: "lunch", price: 30,  img: "https://c8.alamy.com/comp/2C2JBN4/food-collage-many-photos-of-tasty-dishes-a-design-template-for-a-banner-flyer-or-restaurant-menu-2C2JBN4.jpg" },
+  { id: 8, name: "Burger", category: "lunch", price: 25,  img: "https://previews.123rf.com/images/tativo/tativo2301/tativo230100269/196831851-table-full-of-delicious-food-in-plates-top-view-fries-soup-salad-burger-sauces-and-drinks-on.jpg" },
+  { id: 9, name: "Pizza Margherita", category: "lunch", price: 11,  img: "https://www.truefoodkitchen.com/wp-content/uploads/2025/09/Fall-Category.jpg" },
+  //{ id: 10, name: "French Fries", category: "snacks", price: 20,  img: "https://png.pngtree.com/thumb_back/fh260/background/20250319/pngtree-delicious-15-restaurant-food-dishes-menu-image_17102158.jpg" },//
+  { id: 11, name: "Coffee", category: "beverages", price: 5,  img: "https://images.unsplash.com/photo-1634299406566-f2ae2ea46b92?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+  { id: 12, name: "Salad Bowl", category: "breakfast", price: 5,  img: "https://tb-static.uber.com/prod/image-proc/processed_images/2baa1b9a52fe2431826c69fe05c85cd2/fb86662148be855d931b37d6c1e5fcbe.jpeg" },
+  { id: 13, name: "Grilled Chicken", category: "lunch", price: 13,  img: "https://fornopiombo.com/cdn/shop/articles/Delicious-Italian-Style-Menu-Items-To-Serve-At-Your-Dream-Restaurant.jpg?v=1658443933" },
+  { id: 14, name: "Spring Rolls", category: "snacks", price: 10,  img: "https://thumbs.dreamstime.com/b/table-full-delicious-european-food-plates-top-view-fries-soup-salad-burgers-pasta-sauces-festive-dinner-big-table-265814662.jpg" },
+  { id: 15, name: "Orange Juice", category: "beverages", price: 5,  img: "https://hotelroyalhoian.vn/wp-content/uploads/2025/07/best-sushi-in-hoi-an-1.jpg" },
+  //{ id: 16, name: "Pancakes", category: "breakfast", price: 7, veg: true, img: "https://upload.wikimedia.org/wikipedia/commons/4/43/Blueberry_pancakes_%283.jpg" },//
+  { id: 17, name: "Tacos", category: "lunch", price: 15,  img: "https://i.pinimg.com/736x/29/d0/c7/29d0c7b9d295903c36d58747fc9dbc57.jpg" },
+  { id: 18, name: "Ice Cream", category: "snacks", price: 10,  img: "https://blog.photoadking.com/wp-content/uploads/2022/07/restaurant-menu-with-images-1024x791-1.jpg" }
+];
+//    const menuItems = [
+//       { id: 1, name: "Burger", category: "breakfast", price: 50, veg: true, img: "https://source.unsplash.com/random/400x300/?burger" },
+//       { id: 2, name: "Noodles", category: "breakfast", price: 40, veg: true, img: "https://source.unsplash.com/random/400x300/?noodles" },
+//       { id: 3, name: "Chicken", category: "lunch", price: 120, veg: false, img: "https://source.unsplash.com/random/400x300/?chicken" },
+//       { id: 4, name: "Bean Cake", category: "lunch", price: 100, veg: true, img: "https://source.unsplash.com/random/400x300/?cake" },
+//       { id: 5, name: "Samosa", category: "snacks", price: 20, veg: true, img: "https://source.unsplash.com/random/400x300/?samosa" },
+//       { id: 6, name: "Tea", category: "beverages", price: 15, veg: true, img: "https://source.unsplash.com/random/400x300/?tea" },
+//       { id: 7, name: "Bread", category: "snacks", price: 15, veg: true, img: "https://source.unsplash.com/random/400x300/?bread" },
+//       { id: 8, name: "Pasta", category: "beverages", price: 10, veg: true, img: "https://source.unsplash.com/random/400x300/?pasta" },
+      
+//     ];
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    function renderMenu(items = menuItems) {
+      const grid = document.getElementById('menu-grid');
+      grid.innerHTML = '';
+      items.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'menu-card';
+        card.dataset.category = item.category;
+        card.innerHTML = `
+          <img src="${item.img}" alt="${item.name}">
+          <h3>${item.name} ${item.veg ? '<span class="veg">● Veg</span>' : ''}</h3>
+          <p>${item.description || 'Delicious and fresh!'}</p>
+          <div class="price">$${item.price}</div>
+          <button class="add-to-cart" data-id="${item.id}">Add to Cart</button>
+        `;
+        grid.appendChild(card);
+      });
+      addCartListeners();
+    }
+
+    function addCartListeners() {
+      document.querySelectorAll('.add-to-cart').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = parseInt(btn.dataset.id);
+          const item = menuItems.find(i => i.id === id);
+          const cartItem = cart.find(c => c.id === id);
+          if (cartItem) cartItem.qty++;
+          else cart.push({ ...item, qty: 1 });
+          updateCart();
+        });
+      });
+    }
+
+    function updateCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+      document.getElementById('cart-count').textContent = cart.reduce((sum, i) => sum + i.qty, 0);
+      renderCart();
+    }
+
+    function renderCart() {
+      const itemsDiv = document.getElementById('cart-items');
+      itemsDiv.innerHTML = '';
+      let total = 0;
+      cart.forEach(item => {
+        total += item.price * item.qty;
+        const div = document.createElement('div');
+        div.innerHTML = `<p>${item.name} x ${item.qty} = $${item.price * item.qty}
+          <button data-id="${item.id}" class="remove">Remove</button></p>`;
+        itemsDiv.appendChild(div);
+      });
+      document.getElementById('cart-total').textContent = `$${total}`;
+      document.querySelectorAll('.remove').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = parseInt(btn.dataset.id);
+          cart = cart.filter(c => c.id !== id);
+          updateCart();
+        });
+      });
+    }
+
+    // Filters & Search
+    document.querySelectorAll('.categories button').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelector('.categories button.active').classList.remove('active');
+        btn.classList.add('active');
+        const cat = btn.dataset.category;
+        const filtered = cat === 'all' ? menuItems : menuItems.filter(i => i.category === cat);
+        renderMenu(filtered);
+      });
+    });
+
+    document.getElementById('search').addEventListener('input', e => {
+      const term = e.target.value.toLowerCase();
+      const filtered = menuItems.filter(i => i.name.toLowerCase().includes(term));
+      renderMenu(filtered);
+    });
+
+    // Cart Modal
+    document.getElementById('cart-btn').addEventListener('click', () => {
+      document.getElementById('cart-modal').style.display = 'flex';
+      renderCart();
+    });
+    document.getElementById('close-cart').addEventListener('click', () => {
+      document.getElementById('cart-modal').style.display = 'none';
+    });
+    document.getElementById('place-order').addEventListener('click', () => {
+      alert('Order Placed! Total: ' + document.getElementById('cart-total').textContent);
+      cart = [];
+      updateCart();
+      document.getElementById('cart-modal').style.display = 'none';
+    });
+
+    // Initial render
+    renderMenu();
+    updateCart();
+  </script>
 </body>
 </html>
