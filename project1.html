@@ -1,11 +1,122 @@
-<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Tems Accessories</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: orange;
+    color: white;
+}
+
+.h1 {
+    background-color: aqua;
+}
+.header {
+    background-color: aqua;
+    text-align: center;
+    
+}
+.img1 {
+  width: 10%; 
+  /* height: 20%;  */
+  border-radius: 50%;
+  margin-left: -19%
+}
+.img2 {
+ width: 10%; 
+  /* height: 20%;  */
+  border-radius: 70%;
+
+}
+.img3 {
+   width: 10%;
+    border-radius: 50%;
+}
+.img4 {
+    width: 10%;
+    border-radius: 50%;
+}
+.img5 {
+    width: 10%;
+    border-radius: 50%;
+   
+    margin-top: -10%;  
+    
+}
+.h2 {
+    text-decoration: line-through;
+}
+@media only screen and (max-width:768px){
+                body {
+                    background-color: orange;
+                }
+                .container {
+                    width: 100%;
+                    padding: 20px;
+                }
+            }
+            @media only screen and (min-width:1024px){
+                body {
+                 background-color: orange;
+                }
+                .container {
+                    width: 80%;
+                    margin: 0 auto;
+                }
+            }
+    </style>
 </head>
 <body>
-  <h1>Tems Accessories Website</h1>
-  <p>A responsive e-commerce site for accessories.</p>
-  <a href="index.html">← Back to Portfolio</a>
+    <header class="header">
+    <h1>Tems Accessories</h1>
+    <p><b>Your one-stop shop for beautiful and affordable accassories</b></p>
+    <img class="img1" src="Tems4.jpg" alt="Tems">
+    <img class="img2" src="Tems4.jpg" alt="Tems">
+    <img class="img3" src="Tems4.jpg" alt="Tems">
+    <img class="img4" src="Tems2.jpg" alt="Tems">
+    <img class="img5" src="Tems4.jpg" alt="Tems">
+    </header>
+    <section id="about">
+        <h2>About Us</h2>
+        <p>
+            At <b>Tems Accessories</b>,<br> we specialize in selling stylish and affordable accessories for all occasions-including bracelets,<br> earrings, thumb sleeves, ring sleeves, scarfs, and more. <br> we bring you quality and class at the best price
+        </p>
+
+    </section>
+    <section id="products">
+        <h2>Our Products</h2>
+        <ul>
+            <li>Bracelets</li>
+            <li>Earrings</li>
+            <li>Thumbsleeves</li>
+            <li>Ringsleeves</li>
+            <li>Scarfs</li>
+            <li>Headtie</li>
+        </ul>
+
+    </section>
+    <section id="Contact" >
+        <h2>Contact Us</h2>
+        <p>
+            At <b>Tems Accessories</b>,<br> we love to ear from you!
+            Wheather you have questions about our products, need assistance,<br> or just want to say hello, we are here for you. <br> Reach out to us anytimeand we'll get back to you as soon as possible.
+        </p>
+        <form>
+            <label for="name">Your Name</label>
+            <input type="text" id="name" name="name" placeholder="Enter your name" required> <br>
+            <label for="email">Your Email</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required> <br>
+            <label for="message">Message</label> 
+            <textarea id="message" name="message" rows="5" placeholder="Write your messages here..." required></textarea>
+            <botton type="submit">Send Message</botton> <br>
+
+        </form>
+        <a href="http://wa.me/08141340325">Chat on WhatsApp</a>
+    </section>
+
 </body>
 </html>
