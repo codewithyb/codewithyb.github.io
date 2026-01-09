@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Yusuf Abdulrahmon — Portfolio</title>
+  <style>
+    :root{
+      --accent: #00b894;
+      --accent-dark:#019870;
+      --muted:#f2f4f8;
+      --card-bg:#fff;
+      --text:#222;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: var(--muted);
+      color: var(--text);
+      line-height:1.6;
+    }
+    header{
+      background: linear-gradient(90deg,#ffd54a,#ffb84d 60%);
+      color:#222;
+      padding:2rem 1rem;
+      text-align:center;
+    }
+    .hero{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:1.5rem;
+      max-width:1000px;
+      margin:0 auto;
+    }
+    .hero img{
+      width:150px;height:150px;border-radius:50%;object-fit:cover;border:5px solid #fff;
+    }
+    nav{margin-top:1rem}
+    nav a{
+      color:var(--text);
+      text-decoration:none;
+      margin:0 .6rem;
+      font-weight:700;
+    }
+    main{max-width:1000px;margin:2rem auto;padding:0 1rem}
+    section{margin-bottom:2.5rem}
+    h2{text-align:center;margin-bottom:1rem;color:#222}
+    .about p{max-width:700px;margin:0 auto;text-align:center}
+    .skills ul{display:flex;flex-wrap:wrap;justify-content:center;list-style:none;padding:0;margin:0;gap:.5rem}
+    .skills li{background:var(--accent);color:#fff;padding:.5rem .9rem;border-radius:999px;font-weight:700}
+    .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+    .card{background:var(--card-bg);padding:1.25rem;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    .card h3{color:var(--accent);margin:.25rem 0 .5rem}
+    .card p{margin:.25rem 0 1rem;color:#333}
+    .btn{display:inline-block;padding:.5rem .9rem;border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700}
+    .btn:hover{background:var(--accent-dark)}
+    .contact form{display:flex;flex-direction:column;gap:.6rem;max-width:500px;margin:0 auto}
+    .contact input,.contact textarea{padding:.6rem;border:1px solid #ccc;border-radius:6px}
+    footer{text-align:center;background:#222;color:#fff;padding:1rem;margin-top:2rem}
+    @media (min-width:768px){
+      .hero{text-align:left}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="hero">
+      <img src="passport.jpg" alt="">
+      <div>
+        <h1>Yusuf Abdulrahmon</h1>
+        <p style="margin:.25rem 0 0">Frontend Developer — building responsive and accessible websites</p>
+        <nav aria-label="Primary">
+          <a href="#about">About</a>
+          <a href="#skills">Skills</a>
+          <a href="#projects">Projects</a>
+          <a href="#contact">Contact</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="about" class="about">
+      <h2>About Me</h2>
+      <p>Hello — I'm Yusuf Abdulrahmon. I'm passionate about web development and creating user-friendly websites. I build responsive projects using HTML, CSS and JavaScript.</p>
+    </section>
+
+    <section id="skills" class="skills">
+      <h2>My Skills</h2>
+      <ul>
+        <li>HTML</li>
+        <li>CSS</li>
+        <li>JavaScript</li>
+        <li>Responsive Design</li>
+        <li>Web Development</li>
+      </ul>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+      <div class="projects">
+        <article class="card">
+          <h3>Tems Accessories Website</h3>
+          <p class="in">A responsive e-commerce style site for an accessories store (product catalog and layout).</p>
+          <a class="btn" href="project1.html">View Project</a>
+        </article>
+
+        <article class="card">
+          <h3>Ruby Fuddruckers Employment Form</h3>
+          <p class="side">An employment application form built with HTML &amp; CSS. Collects applicant details such as name, email, skills and experience.</p>
+          <a class="btn" href="project2.html">View Project</a>
+        </article>
+
+        <article class="card">
+          <h3>Campus Canteen Website</h3>
+          <p class="food">A responsive site with an interactive food menu, category filters, and a shopping cart UI (HTML prototype).</p>
+          <a class="btn" href="project3.html">View Project</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="contact">
+      <h2>Contact Me</h2>
+      <form>
+        <input type="text" placeholder="Your Name" required>
+        <input type="email" placeholder="Your Email" required>
+        <textarea placeholder="Your Message" rows="5" required></textarea>
+        <button class="btn" type="submit">Send Message</button>
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Yusuf Abdulrahmon. All rights reserved.</p>
+  </footer>
+</body>
+</html>
